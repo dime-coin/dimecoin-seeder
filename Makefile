@@ -1,5 +1,5 @@
-INCDIR ?= -I /home/alex/projects/quark/depends/x86_64-unknown-linux-gnu/include
-LIBDIR ?= -L /home/alex/projects/quark/depends/x86_64-unknown-linux-gnu/lib
+INCDIR ?= -I /home/alex/projects/dimecoin/depends/x86_64-unknown-linux-gnu/include
+LIBDIR ?= -L /home/alex/projects/dimecoin/depends/x86_64-unknown-linux-gnu/lib
 CXXFLAGS = -static -O3 -g0 ${INCDIR} $(LIBDIR)
 LDFLAGS = $(CXXFLAGS)
 

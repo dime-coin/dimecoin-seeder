@@ -12,11 +12,12 @@
 
 #define MIN_RETRY 1000
 
-#define REQUIRE_VERSION 70003
+#define REQUIRE_VERSION 70004
 
 static inline int GetRequireHeight(const bool testnet = fTestNet)
 {
-    return testnet ? 0 : 3054012;
+    //return testnet ? 0 : 3054012;
+    return testnet ? 0 : 0;
 }
 
 std::string static inline ToString(const CService &ip) {
@@ -99,12 +100,39 @@ public:
     ret.services = services;
     return ret;
   }
-  
+
+// Not needed anymore for now, since we upgraded to PROTO_VERSION 70004 
+/*
+  bool IsGoodClientSubVersion() const {
+    static std::string safeChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 .,;_/:?@()");
+    std::string strResult;
+    for (std::string::size_type i = 0; i < clientSubVersion.size(); i++)
+    {
+        if (safeChars.find(clientSubVersion[i]) != std::string::npos)
+            strResult.push_back(clientSubVersion[i]);
+    }        
+
+    if (strResult == "/dimecoin:1.8.0/" 
+       || strResult == "/dimecoin:1.7.2/"
+       || strResult == "/bitnodes.net:1.7.2/"
+       || strResult == "/dimecoin:1.7.0.2/"
+       || strResult == "/Satoshi:1.6.9/"
+       || strResult == "/Satoshi:1.5.0.14/"
+       || strResult == "/Satoshi:0.8.3.14/"
+       || strResult == "/Satoshi:0.8.3.13/"
+       || strResult == "/DimecoinJ:0.12.4/Dimecoin Wallet:1.0.0rc3/"
+       || strResult == "/DimecoinJ:0.12.4/Dimecoin Wallet:1.0.0rc4/") return false;
+
+    return true;
+  }
+*/
+
   bool IsGood() const {
     if (ip.GetPort() != GetDefaultPort()) return false;
     if (!(services & NODE_NETWORK)) return false;
     if (!ip.IsRoutable()) return false;
     if (clientVersion && clientVersion < REQUIRE_VERSION) return false;
+    //if (!IsGoodClientSubVersion()) return false;
     if (blocks && blocks < GetRequireHeight()) return false;
 
     if (total <= 3 && success * 2 >= total) return true;
@@ -119,7 +147,8 @@ public:
   }
   int GetBanTime() const {
     if (IsGood()) return 0;
-    if (clientVersion && clientVersion < 70001) { return 604800; }
+    //if (!IsGoodClientSubVersion()) return 604800;
+    if (clientVersion && clientVersion < REQUIRE_VERSION) { return 604800; }
     if (stat1M.reliability - stat1M.weight + 1.0 < 0.15 && stat1M.count > 32) { return 30*86400; }
     if (stat1W.reliability - stat1W.weight + 1.0 < 0.10 && stat1W.count > 16) { return 7*86400; }
     if (stat1D.reliability - stat1D.weight + 1.0 < 0.05 && stat1D.count > 8) { return 1*86400; }
@@ -127,6 +156,7 @@ public:
   }
   int GetIgnoreTime() const {
     if (IsGood()) return 0;
+    //if (!IsGoodClientSubVersion()) return 604800;
     if (stat1M.reliability - stat1M.weight + 1.0 < 0.20 && stat1M.count > 2) { return 10*86400; }
     if (stat1W.reliability - stat1W.weight + 1.0 < 0.16 && stat1W.count > 2)  { return 3*86400; }
     if (stat1D.reliability - stat1D.weight + 1.0 < 0.12 && stat1D.count > 2)  { return 8*3600; }
