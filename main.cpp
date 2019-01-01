@@ -406,8 +406,9 @@ static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
   if (!fTestNet){
-    db.Add(CService("167.99.6.185", 11931), true); 
-    db.Add(CService("188.165.218.169", 11931), true);
+    db.Add(CService("167.99.6.185", 11931), true);    //node1.dimecoinnetwork.com
+    db.Add(CService("104.248.244.51", 11931), true);  //node2.dimecoinnetwork.com
+    db.Add(CService("188.165.218.169", 11931), true); //dime-pool.dimecoinnetwork.com
   }
   do {
     for (int i=0; seeds[i] != ""; i++) {
