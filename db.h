@@ -12,7 +12,7 @@
 
 #define MIN_RETRY 1000
 
-#define REQUIRE_VERSION 70004
+#define REQUIRE_VERSION 70005
 
 static inline int GetRequireHeight(const bool testnet = fTestNet)
 {
@@ -101,7 +101,7 @@ public:
     return ret;
   }
 
-// Not needed anymore for now, since we upgraded to PROTO_VERSION 70004 
+// Not needed anymore for now, since we upgraded to PROTO_VERSION 70004 and 70005
 /*
   bool IsGoodClientSubVersion() const {
     static std::string safeChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 .,;_/:?@()");
